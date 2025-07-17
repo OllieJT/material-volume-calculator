@@ -269,10 +269,9 @@ export default function VolumeCalculator() {
   }
 
   const formatVolume = (volume: number): string => {
-    if (volume >= 1000000) {
-      return `${(volume / 1000000).toFixed(2)} cm³`
-    }
-    return `${volume.toFixed(2)} mm³`
+    // Normalize all volumes to cm³ for consistency
+    // All volumes are stored in mm³ internally, convert to cm³ for display
+    return `${(volume / 1000000).toFixed(2)} cm³`
   }
 
   const formatWeight = (weight: number): string => {
@@ -371,7 +370,7 @@ export default function VolumeCalculator() {
                   <Input
                     id="container-volume"
                     type="number"
-                    placeholder="Enter volume directly"
+                    placeholder="Enter volume in mm³"
                     value={containerVolumeInput.volume}
                     onChange={(e) => setContainerVolumeInput({ volume: e.target.value })}
                   />
@@ -442,7 +441,7 @@ export default function VolumeCalculator() {
                   <Input
                     id="void-volume"
                     type="number"
-                    placeholder="Enter volume directly (optional)"
+                    placeholder="Enter volume in mm³ (optional)"
                     value={voidVolumeInput.volume}
                     onChange={(e) => setVoidVolumeInput({ volume: e.target.value })}
                   />
@@ -562,11 +561,7 @@ export default function VolumeCalculator() {
                     <span className="text-purple-700 font-bold">{formatWeight(result.materialWeight)}</span>
                   </p>
                 )}
-                {result.materialVolume >= 1000000 && (
-                  <p className="text-sm text-gray-600">
-                    Volume: {(result.materialVolume / 1000000).toFixed(2)} cubic centimeters
-                  </p>
-                )}
+
               </div>
             </CardContent>
           </Card>
@@ -592,7 +587,7 @@ export default function VolumeCalculator() {
             </p>
             <p>
               4. <strong>Units:</strong> Dimensions in millimeters (mm), volumes in cubic millimeters (mm³), density in
-              g/cm³.
+              g/cm³. All results are displayed in cubic centimeters (cm³).
             </p>
             <p>
               5. <strong>URL Persistence:</strong> Your inputs are saved in the URL - bookmark or share the link to
